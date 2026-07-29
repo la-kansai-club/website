@@ -7,7 +7,7 @@ import Button from "./Button";
 import { navLinks } from "@/content/home";
 
 // サイト共通のヘッダー。全ページで再利用する。
-// 背景はブランドカラーのネイビー(bg-navy-deep)。JoinCTAセクションと同じ色で統一している。
+// 背景は白(bg-paper)。
 //
 // ロゴ画像について:
 // - 実体は public/images/logo.png (透過PNG)
@@ -18,7 +18,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="border-b border-white/10 bg-navy-deep">
+    <header className="border-b border-line bg-paper">
       <div className="mx-auto flex max-w-content items-center justify-between px-6 py-5 md:px-12">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
@@ -29,10 +29,10 @@ export default function Header() {
             priority
             className="h-8 w-auto md:h-10"
           />
-          <span className="text-[15px] font-bold tracking-wide text-white">LA KANSAI CLUB</span>
+          <span className="text-[15px] font-bold tracking-wide text-navy-deep">LA KANSAI CLUB</span>
         </Link>
 
-        <nav className="hidden items-center gap-7 text-body font-semibold text-white md:flex">
+        <nav className="hidden items-center gap-7 text-body font-semibold text-ink md:flex">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href}>
               {link.label}
@@ -47,7 +47,7 @@ export default function Header() {
           type="button"
           aria-label={open ? "メニューを閉じる" : "メニューを開く"}
           onClick={() => setOpen((v) => !v)}
-          className="text-white md:hidden"
+          className="text-navy-deep md:hidden"
         >
           <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={1.8}>
             {open ? (
@@ -60,7 +60,7 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-white/10 px-6 py-4 text-body font-semibold text-white md:hidden">
+        <nav className="flex flex-col gap-1 border-t border-line px-6 py-4 text-body font-semibold text-ink md:hidden">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} className="py-2" onClick={() => setOpen(false)}>
               {link.label}
