@@ -81,6 +81,15 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
   navJoinButtonLabel
 }`;
 
+// Aboutページ設定(シングルトン)。sections配列はブロックの種類ごとに形が異なるため、
+// "..."で全フィールドをそのまま展開している(ネストした活動項目・写真も含めて解決される)
+export const aboutPageQuery = `*[_type == "aboutPage"][0]{
+  pageTitle,
+  sections[]{
+    ...
+  }
+}`;
+
 function timeoutAfter(ms: number): Promise<never> {
   return new Promise((_, reject) => {
     setTimeout(() => reject(new Error(`Sanityへの問い合わせが${ms}ms以内に完了しませんでした`)), ms);

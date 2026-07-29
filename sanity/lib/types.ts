@@ -47,6 +47,82 @@ export interface SanityHomePage {
   joinCtaLabel?: string;
 }
 
+// Portable Text(太字・箇条書きのみに制限したリッチテキスト)の型。
+// components/RichText.tsx でこの形だけを想定した専用レンダラーを実装している。
+
+export interface PortableTextSpan {
+  _key: string;
+  _type: "span";
+  text: string;
+  marks?: string[];
+}
+
+export interface PortableTextBlock {
+  _key: string;
+  _type: "block";
+  style?: string;
+  listItem?: string;
+  children: PortableTextSpan[];
+}
+
+// Aboutページの「セクション」を構成する5種類のブロック。
+// sanity/schemaTypes/aboutSections/ の各スキーマに対応する。
+
+export interface TextSectionBlock {
+  _type: "textSection";
+  _key: string;
+  title?: string;
+  body: PortableTextBlock[];
+  image?: Image;
+}
+
+export interface MissionSectionBlock {
+  _type: "missionSection";
+  _key: string;
+  title?: string;
+  items: string[];
+}
+
+export interface HistorySectionBlock {
+  _type: "historySection";
+  _key: string;
+  title?: string;
+  body: PortableTextBlock[];
+}
+
+export interface ActivityItem {
+  _key: string;
+  name: string;
+  description?: string;
+  image?: Image;
+}
+
+export interface ActivitiesSectionBlock {
+  _type: "activitiesSection";
+  _key: string;
+  title?: string;
+  activities: ActivityItem[];
+}
+
+export interface PhotoGallerySectionBlock {
+  _type: "photoGallerySection";
+  _key: string;
+  title?: string;
+  photos: Image[];
+}
+
+export type AboutSectionBlock =
+  | TextSectionBlock
+  | MissionSectionBlock
+  | HistorySectionBlock
+  | ActivitiesSectionBlock
+  | PhotoGallerySectionBlock;
+
+export interface SanityAboutPage {
+  pageTitle?: string;
+  sections?: AboutSectionBlock[];
+}
+
 export interface SanitySiteSettings {
   logo?: Image;
   favicon?: Image;

@@ -41,6 +41,9 @@ function structure(S: StructureBuilder) {
                 .title("Homeページ")
                 .child(S.document().schemaType("homePage").documentId("homePage")),
               S.listItem()
+                .title("Aboutページ")
+                .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
+              S.listItem()
                 .title("サイト設定")
                 .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
             ])
