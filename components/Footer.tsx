@@ -1,23 +1,45 @@
 import Link from "next/link";
-import { navLinks, footer } from "@/content/home";
 
 // サイト共通のフッター。DESIGN_RULES.md 通り、ネイビーを背景に使う唯一の大きな面。
 // 全ページで再利用する。
+// 住所・メール・SNS・ナビゲーションの表示名・団体名はSanity(siteSettings)から編集できる。
+// ナビゲーションのリンク先(href)はコード側で固定(親のapp/layout.tsxから渡される)。
+// Copyrightの年は自動計算し、専用フィールドは持たない。
 
-export default function Footer() {
+type NavItem = { label: string; href: string };
+
+type FooterProps = {
+  address: string;
+  email: string;
+  instagramUrl?: string;
+  facebookUrl?: string;
+  navItems: NavItem[];
+  organizationName: string;
+};
+
+export default function Footer({
+  address,
+  email,
+  instagramUrl,
+  facebookUrl,
+  navItems,
+  organizationName,
+}: FooterProps) {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="bg-navy-footer px-6 py-16 md:px-16">
       <div className="mx-auto grid max-w-content gap-12 md:grid-cols-[2fr_1fr_1fr]">
         <div>
           <p className="mb-2 text-[14px] font-bold text-white">LA KANSAI CLUB</p>
-          <p className="text-caption text-footer-text">{footer.address}</p>
-          <p className="mt-1 text-caption text-footer-text">{footer.email}</p>
+          <p className="text-caption text-footer-text">{address}</p>
+          <p className="mt-1 text-caption text-footer-text">{email}</p>
         </div>
 
         <div>
           <p className="mb-3 text-[12px] font-bold text-footer-text-muted">Menu</p>
           <div className="flex flex-col gap-2 text-body text-footer-text">
-            {navLinks
+            {navItems
               .filter((link) => link.href !== "/")
               .map((link) => (
                 <Link key={link.href} href={link.href}>
@@ -30,14 +52,14 @@ export default function Footer() {
         <div>
           <p className="mb-3 text-[12px] font-bold text-footer-text-muted">Follow us</p>
           <div className="flex gap-4 text-white">
-            <a href="#" aria-label="Instagram">
+            <a href={instagramUrl || "#"} aria-label="Instagram">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6}>
                 <rect x="3" y="3" width="18" height="18" rx="5" />
                 <circle cx="12" cy="12" r="4.2" />
                 <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none" />
               </svg>
             </a>
-            <a href="#" aria-label="Facebook">
+            <a href={facebookUrl || "#"} aria-label="Facebook">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.3}>
                 <circle cx="12" cy="12" r="9.2" strokeWidth={1.6} />
                 <path
@@ -46,7 +68,7 @@ export default function Footer() {
                 />
               </svg>
             </a>
-            <a href={`mailto:${footer.email}`} aria-label="Email">
+            <a href={`mailto:${email}`} aria-label="Email">
               <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth={1.6}>
                 <rect x="3" y="5.5" width="18" height="13" rx="2" />
                 <path d="M4 7l8 6 8-6" strokeLinecap="round" strokeLinejoin="round" />
@@ -57,7 +79,9 @@ export default function Footer() {
       </div>
 
       <div className="mx-auto mt-8 max-w-content border-t border-white/15 pt-5">
-        <p className="text-caption text-footer-text-muted">{footer.copyright}</p>
+        <p className="text-caption text-footer-text-muted">
+          © {year} {organizationName}
+        </p>
       </div>
     </footer>
   );

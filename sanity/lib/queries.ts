@@ -43,6 +43,44 @@ export const latestGalleryAlbumsQuery = `*[_type == "galleryAlbum"] | order(even
   coverImage
 }`;
 
+// Homeページ設定(シングルトン)。ドキュメントIDを固定しているため常に1件のみ存在する
+export const homePageQuery = `*[_type == "homePage"][0]{
+  heroTitle,
+  heroSubtitle,
+  heroImage,
+  heroPrimaryCtaLabel,
+  heroSecondaryCtaLabel,
+  eventsSectionTitle,
+  gallerySectionTitle,
+  newsSectionTitle,
+  aboutTeaserText,
+  aboutTeaserImage,
+  joinTitle,
+  joinCtaLabel
+}`;
+
+// サイト設定(シングルトン)。Header/Footer/メタ情報で共通して使う
+export const siteSettingsQuery = `*[_type == "siteSettings"][0]{
+  logo,
+  favicon,
+  siteTitle,
+  metaDescription,
+  ogImage,
+  organizationName,
+  email,
+  address,
+  instagramUrl,
+  facebookUrl,
+  navHomeLabel,
+  navAboutLabel,
+  navEventsLabel,
+  navGalleryLabel,
+  navNewsLabel,
+  navDonateLabel,
+  navContactLabel,
+  navJoinButtonLabel
+}`;
+
 function timeoutAfter(ms: number): Promise<never> {
   return new Promise((_, reject) => {
     setTimeout(() => reject(new Error(`Sanityへの問い合わせが${ms}ms以内に完了しませんでした`)), ms);

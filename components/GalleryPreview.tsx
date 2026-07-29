@@ -30,13 +30,18 @@ function AlbumLabel({ title, tag }: { title: string; tag?: string }) {
   );
 }
 
-export default function GalleryPreview({ albums }: { albums: SanityGalleryAlbum[] }) {
+type GalleryPreviewProps = {
+  albums: SanityGalleryAlbum[];
+  sectionTitle: string;
+};
+
+export default function GalleryPreview({ albums, sectionTitle }: GalleryPreviewProps) {
   return (
     <section className="mx-auto max-w-content px-6 pt-16 md:px-12 md:pt-24">
       <div className="flex items-baseline justify-between">
         <div>
           <p className="mb-2 text-eyebrow font-bold uppercase text-navy-deep">Gallery</p>
-          <h2 className="text-h2 text-navy md:text-h2-desktop">思い出のアルバム</h2>
+          <h2 className="text-h2 text-navy md:text-h2-desktop">{sectionTitle}</h2>
         </div>
         <Link href="/gallery" className="whitespace-nowrap text-caption font-bold text-navy-deep">
           Galleryをもっと見る →

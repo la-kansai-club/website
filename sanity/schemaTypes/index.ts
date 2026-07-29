@@ -4,5 +4,11 @@
 import { eventType } from "./event";
 import { newsType } from "./news";
 import { galleryAlbumType } from "./galleryAlbum";
+import { homePageType } from "./homePage";
+import { siteSettingsType } from "./siteSettings";
 
-export const schemaTypes = [eventType, newsType, galleryAlbumType];
+export const schemaTypes = [eventType, newsType, galleryAlbumType, homePageType, siteSettingsType];
+
+// シングルトン(1件しか存在しないドキュメント)のtype名一覧。
+// sanity.config.tsのStructure Builderで、一覧画面を経由せず直接開けるように使う。
+export const singletonTypes = new Set(["homePage", "siteSettings"]);

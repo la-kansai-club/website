@@ -7,13 +7,18 @@ import type { SanityNewsItem } from "@/sanity/lib/types";
 // 「NEW」バッジはスキーマに手動フィールドを持たせず、掲載から14日以内かをここで判定する。
 // 外部リンクURLが設定されている項目のみ、ボタン名(空欄なら「詳しく見る」)付きのリンクを表示する。
 
-export default function NewsPreview({ items }: { items: SanityNewsItem[] }) {
+type NewsPreviewProps = {
+  items: SanityNewsItem[];
+  sectionTitle: string;
+};
+
+export default function NewsPreview({ items, sectionTitle }: NewsPreviewProps) {
   return (
     <section className="mx-auto max-w-content px-6 pt-16 md:px-12 md:pt-24">
       <div className="flex items-baseline justify-between">
         <div>
           <p className="mb-2 text-eyebrow font-bold uppercase text-navy-deep">News</p>
-          <h2 className="text-h2 text-navy md:text-h2-desktop">お知らせ</h2>
+          <h2 className="text-h2 text-navy md:text-h2-desktop">{sectionTitle}</h2>
         </div>
         <Link href="/news" className="whitespace-nowrap text-caption font-bold text-navy-deep">
           Newsをもっと見る →

@@ -1,15 +1,37 @@
 import PhotoFrame from "./PhotoFrame";
 import Button from "./Button";
-import { hero } from "@/content/home";
 
 // トップページ最上部のヒーロー。写真を主役にし、CTAを2つ配置する
 // (デザインモック通り: Primary「イベントを見る」/ Secondary「入会する」)。
+//
+// 文言・画像はSanity(homePage)から編集できる。リンク先(href)は事故防止のため
+// 呼び出し側(app/page.tsx)で固定値を渡す構成にしており、Sanityからは変更できない。
 
-export default function Hero() {
+type HeroProps = {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  image?: string;
+  primaryCtaLabel: string;
+  primaryCtaHref: string;
+  secondaryCtaLabel: string;
+  secondaryCtaHref: string;
+};
+
+export default function Hero({
+  eyebrow,
+  title,
+  subtitle,
+  image,
+  primaryCtaLabel,
+  primaryCtaHref,
+  secondaryCtaLabel,
+  secondaryCtaHref,
+}: HeroProps) {
   return (
     <div className="relative">
       <PhotoFrame
-        src={hero.image}
+        src={image}
         alt=""
         aspect="heroMobile"
         priority
@@ -20,19 +42,15 @@ export default function Hero() {
           実写真を設定した際は、DESIGN_RULES.mdの「黒の35〜55%のオーバーレイ」に戻すことを検討する */}
       <div className="absolute inset-0 bg-navy-deep/80" />
       <div className="absolute inset-0 flex flex-col justify-center px-6 md:max-w-[620px] md:px-16">
-        <p className="mb-3 text-eyebrow font-bold uppercase text-white/95 md:mb-4">
-          {hero.eyebrow}
-        </p>
-        <h1 className="mb-3 text-h1 text-white md:text-h1-desktop">{hero.title}</h1>
-        <p className="mb-6 text-body text-white/90 md:mb-8 md:text-body-desktop">
-          {hero.subtitle}
-        </p>
+        <p className="mb-3 text-eyebrow font-bold uppercase text-white/95 md:mb-4">{eyebrow}</p>
+        <h1 className="mb-3 text-h1 text-white md:text-h1-desktop">{title}</h1>
+        <p className="mb-6 text-body text-white/90 md:mb-8 md:text-body-desktop">{subtitle}</p>
         <div className="flex flex-col gap-3 md:flex-row md:gap-4">
-          <Button href={hero.primaryCta.href} variant="primary" className="justify-center">
-            {hero.primaryCta.label}
+          <Button href={primaryCtaHref} variant="primary" className="justify-center">
+            {primaryCtaLabel}
           </Button>
-          <Button href={hero.secondaryCta.href} variant="onPhoto" className="justify-center">
-            {hero.secondaryCta.label}
+          <Button href={secondaryCtaHref} variant="onPhoto" className="justify-center">
+            {secondaryCtaLabel}
           </Button>
         </div>
       </div>

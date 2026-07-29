@@ -1,8 +1,12 @@
-// Homeページのうち、更新頻度が低くコードに残す部分のテキスト・コンテンツ。
-// イベント・お知らせ・ギャラリーはSanityから取得するため、ここには含めない
-// (sanity/lib/queries.ts, app/page.tsx を参照)。
+// Homeページ・共通レイアウトの「既定値(フォールバック)」。
 //
-// 写真素材が用意され次第、各 image に画像パスを追加するだけで差し替えられる。
+// hero/aboutPreview/joinCta/footer/navLinksは、現在Sanity(homePage/siteSettings)からも
+// 編集できるようになっている。Sanity側にまだ値が無い項目は、ここに定義した値がそのまま
+// 表示される(app/page.tsx, app/layout.tsxの合成ロジックを参照)。
+// そのため、この値を消してはいけない。Sanityが一時的に使えない場合の安全網でもある。
+//
+// イベント・お知らせ・ギャラリーの実データはSanityのみで管理するため、ここには含めない
+// (sanity/lib/queries.ts, app/page.tsx を参照)。
 
 export const navLinks = [
   { label: "Home", href: "/" },
