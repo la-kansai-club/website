@@ -65,7 +65,16 @@ GalleryPreview / NewsPreviewはSanityから取得したデータを`content/home
 
 **重要な制約**:
 - Preview URL（上記の固定エイリアスも、push毎に発行されるユニークな`website-<hash>-la-kansai-club.vercel.app`形式のURLも含む）はVercelのDeployment Protection（SSO）で保護されており、Vercelチームアカウントへのログインなしにはアクセスできない（アクセスすると`vercel.com/sso-api`へ302リダイレクトされる）。そのため、**Claude Code自身はPreview環境を目視確認できない**
-- ローカルの`next dev`は、このPC固有のTLS証明書検証エラー（`UNABLE_TO_VERIFY_LEAF_SIGNATURE`）により、Sanityへの通信・Google Fonts取得など外部HTTPS通信を伴う処理が失敗することがある（ページ全体が500になる場合と、safeFetch経由でフォールバック表示になり正常表示される場合の両方があり得る。原因の切り分け方法は下記「目視確認できない場合の切り分け」を参照）
+- ローカルの`next dev`は、このPC固有のTLS証明書検証エラー（`UNABLE_TO_VERIFY_LEAF_SIGNATURE`）により、Sanityへの通信・Google Fonts取得など外部HTTPS通信を伴う処理が失敗することがある。2026-07-30に確認した実際の挙動：Google Fontsの取得失敗はNext.js側に独自のフォールバック機構があり無害（`Using fallback font instead`のログのみでページは正常表示）。一方、複数の`safeFetch()`呼び出しが並行するページ（Home等）でサーバー起動直後の初回リクエストに限り、`failed to pipe response`エラーでレンダリングが失敗し、まれにdev serverプロセス自体が終了することがある（`preview_logs`でプロセス消失を確認済み）。2回目以降のリクエストや、サーバーが温まった状態では正常に200を返すことが多い。原因の切り分け方法は下記「目視確認できない場合の切り分け」を参照
+
+**Claude Browserを使う基準（2026-07-30確定）**: 通常の変更（リンク先・文言・色・CMS設定・軽微なCSSなど）は、下記のtsc/next build/GitHub push/Vercel Build確認のみで十分で、Claude Browserは使わない。Claude Browserを使うのは次のいずれかの場合のみ。
+- 新しいページの追加
+- 大きなレイアウト変更
+- レスポンシブデザインの変更
+- 複数コンポーネントにまたがるUI変更
+- ユーザーがブラウザ確認を明示的に依頼した場合
+
+Browserを使う場合も、変更したページだけを確認する。サイト全体を巡回したり、変更していないページまで確認する必要はない。
 
 **実装後に必ず行う確認**:
 1. `npx tsc --noEmit`（型チェック）
