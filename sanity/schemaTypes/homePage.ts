@@ -69,17 +69,16 @@ export const homePageType = defineType({
       group: "sections",
     }),
     defineField({
+      name: "aboutTeaserTitle",
+      title: "About紹介の見出し",
+      type: "string",
+      group: "about",
+    }),
+    defineField({
       name: "aboutTeaserText",
       title: "About紹介文",
       type: "text",
       rows: 3,
-      group: "about",
-    }),
-    defineField({
-      name: "aboutTeaserImage",
-      title: "About紹介の写真",
-      type: "image",
-      options: { hotspot: true },
       group: "about",
     }),
     defineField({ name: "joinTitle", title: "Join見出し", type: "string", group: "join" }),

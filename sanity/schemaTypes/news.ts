@@ -23,6 +23,14 @@ export const newsType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "slug",
+      title: "URL(スラッグ)",
+      type: "slug",
+      description: "詳細ページのURLに使われます。通常はタイトルから自動生成で問題ありません。",
+      options: { source: "title", maxLength: 96 },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "publishedAt",
       title: "掲載日",
       type: "datetime",

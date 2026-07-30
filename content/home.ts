@@ -29,9 +29,9 @@ export const hero = {
 };
 
 export const aboutPreview = {
+  title: "LA Kansai Clubについて",
   text: "関西出身者・関西ファンが集まり、河内音頭や学生研修などの活動を通じてつながりを広げています。",
   link: { label: "Aboutで詳しく見る", href: "/about" },
-  image: undefined as string | undefined,
 };
 
 export const joinCta = {
@@ -41,6 +41,6 @@ export const joinCta = {
 
 export const footer = {
   address: "Los Angeles, CA",
-  email: "info@lakansaiclub.org",
+  email: "info@kansaiclub.org",
   copyright: "© 2026 LA Kansai Club",
 };

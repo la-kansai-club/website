@@ -29,15 +29,15 @@ export default function Header({ logoUrl, navItems, joinButtonLabel }: HeaderPro
 
   return (
     <header className="border-b border-line bg-paper">
-      <div className="mx-auto flex max-w-content items-center justify-between px-6 py-5 md:px-12">
-        <Link href="/" className="flex items-center gap-2.5">
+      <div className="mx-auto flex max-w-content items-center justify-between px-6 py-4 md:px-12 md:py-5">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src={logoUrl}
             alt="LA Kansai Club ロゴ"
             width={200}
             height={264}
             priority
-            className="h-8 w-auto md:h-10"
+            className="h-10 w-auto sm:h-11 md:h-12"
           />
           <span className="text-[15px] font-bold tracking-wide text-navy-deep">LA KANSAI CLUB</span>
         </Link>

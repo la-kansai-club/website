@@ -26,3 +26,9 @@ export function formatEventMeta(eventDate: string, location: string): string {
   const formattedDate = `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日(${weekdayLabels[d.getDay()]})`;
   return `${formattedDate}・${location}`;
 }
+
+// ギャラリーアルバムの開催日表示("2026年9月13日"形式)
+export function formatAlbumDate(eventDate: string): string {
+  const d = new Date(eventDate);
+  return `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日`;
+}

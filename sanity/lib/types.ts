@@ -5,6 +5,7 @@ import type { Image } from "sanity";
 
 export interface SanityEvent {
   title: string;
+  slug: { current: string };
   eventDate: string;
   endDateTime?: string;
   location: string;
@@ -16,15 +17,27 @@ export interface SanityEvent {
 
 export interface SanityNewsItem {
   title: string;
+  slug: { current: string };
   publishedAt: string;
   externalUrl?: string;
   buttonLabel?: string;
 }
 
+export interface SanityNewsItemDetail extends SanityNewsItem {
+  body: PortableTextBlock[];
+}
+
 export interface SanityGalleryAlbum {
   title: string;
+  slug: { current: string };
+  eventDate: string;
   tag?: string;
   coverImage?: Image;
+}
+
+export interface SanityGalleryAlbumDetail extends SanityGalleryAlbum {
+  photos?: Image[];
+  relatedEvent?: { title: string; slug: string } | null;
 }
 
 // Homeページ設定・サイト設定はシングルトン(1件のみ)のため、
@@ -41,8 +54,8 @@ export interface SanityHomePage {
   eventsSectionTitle?: string;
   gallerySectionTitle?: string;
   newsSectionTitle?: string;
+  aboutTeaserTitle?: string;
   aboutTeaserText?: string;
-  aboutTeaserImage?: Image;
   joinTitle?: string;
   joinCtaLabel?: string;
 }
@@ -121,6 +134,39 @@ export type AboutSectionBlock =
 export interface SanityAboutPage {
   pageTitle?: string;
   sections?: AboutSectionBlock[];
+}
+
+export interface JoinStep {
+  _key: string;
+  title: string;
+  description?: string;
+}
+
+export interface SanityJoinPage {
+  pageTitle?: string;
+  benefitsTitle?: string;
+  benefits?: string[];
+  feeTitle?: string;
+  feeBody?: PortableTextBlock[];
+  stepsTitle?: string;
+  steps?: JoinStep[];
+  applyButtonLabel?: string;
+  applyUrl?: string;
+}
+
+export interface SanityDonatePage {
+  pageTitle?: string;
+  body?: PortableTextBlock[];
+  zelleTitle?: string;
+  zelleImage?: Image;
+  zelleDescription?: string;
+  checkTitle?: string;
+  checkDescription?: string;
+}
+
+export interface SanityContactPage {
+  pageTitle?: string;
+  introText?: string;
 }
 
 export interface SanitySiteSettings {

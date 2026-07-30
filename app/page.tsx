@@ -40,9 +40,6 @@ export default async function HomePage() {
   const heroImageUrl = homePage?.heroImage
     ? urlFor(homePage.heroImage).width(1600).height(1200).url()
     : fallbackHero.image;
-  const aboutTeaserImageUrl = homePage?.aboutTeaserImage
-    ? urlFor(homePage.aboutTeaserImage).width(800).height(1000).url()
-    : fallbackAboutPreview.image;
 
   return (
     <>
@@ -81,7 +78,10 @@ export default async function HomePage() {
         albums={albums}
         sectionTitle={homePage?.gallerySectionTitle || FALLBACK_GALLERY_SECTION_TITLE}
       />
-      <AboutPreview text={homePage?.aboutTeaserText || fallbackAboutPreview.text} image={aboutTeaserImageUrl} />
+      <AboutPreview
+        title={homePage?.aboutTeaserTitle || fallbackAboutPreview.title}
+        text={homePage?.aboutTeaserText || fallbackAboutPreview.text}
+      />
       <NewsPreview items={newsItems} sectionTitle={homePage?.newsSectionTitle || FALLBACK_NEWS_SECTION_TITLE} />
       <JoinCTA
         title={homePage?.joinTitle || fallbackJoinCta.title}

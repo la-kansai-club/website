@@ -33,7 +33,7 @@ export default function NewsPreview({ items, sectionTitle }: NewsPreviewProps) {
         <div className="mt-7 border-t border-line">
           {items.map((item) => (
             <div
-              key={item.title}
+              key={item.slug.current}
               className="flex flex-col gap-1.5 border-b border-line py-4 md:flex-row md:items-center md:justify-between md:gap-6"
             >
               <div className="flex flex-col gap-1.5 md:flex-row md:items-center md:gap-6">
@@ -41,7 +41,9 @@ export default function NewsPreview({ items, sectionTitle }: NewsPreviewProps) {
                   <span className="text-caption text-ink-soft">{formatNewsDate(item.publishedAt)}</span>
                   {isRecentlyPublished(item.publishedAt) && <Tag>NEW</Tag>}
                 </div>
-                <span className="text-body text-ink">{item.title}</span>
+                <Link href={`/news/${item.slug.current}`} className="text-body text-ink">
+                  {item.title}
+                </Link>
               </div>
               {item.externalUrl && (
                 <a

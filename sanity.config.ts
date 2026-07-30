@@ -44,6 +44,15 @@ function structure(S: StructureBuilder) {
                 .title("Aboutページ")
                 .child(S.document().schemaType("aboutPage").documentId("aboutPage")),
               S.listItem()
+                .title("Joinページ")
+                .child(S.document().schemaType("joinPage").documentId("joinPage")),
+              S.listItem()
+                .title("Donateページ")
+                .child(S.document().schemaType("donatePage").documentId("donatePage")),
+              S.listItem()
+                .title("Contactページ")
+                .child(S.document().schemaType("contactPage").documentId("contactPage")),
+              S.listItem()
                 .title("サイト設定")
                 .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
             ])

@@ -12,6 +12,9 @@ import { missionSectionType } from "./aboutSections/missionSection";
 import { historySectionType } from "./aboutSections/historySection";
 import { activitiesSectionType } from "./aboutSections/activitiesSection";
 import { photoGallerySectionType } from "./aboutSections/photoGallerySection";
+import { joinPageType } from "./joinPage";
+import { donatePageType } from "./donatePage";
+import { contactPageType } from "./contactPage";
 
 export const schemaTypes = [
   eventType,
@@ -25,8 +28,18 @@ export const schemaTypes = [
   historySectionType,
   activitiesSectionType,
   photoGallerySectionType,
+  joinPageType,
+  donatePageType,
+  contactPageType,
 ];
 
 // シングルトン(1件しか存在しないドキュメント)のtype名一覧。
 // sanity.config.tsのStructure Builderで、一覧画面を経由せず直接開けるように使う。
-export const singletonTypes = new Set(["homePage", "siteSettings", "aboutPage"]);
+export const singletonTypes = new Set([
+  "homePage",
+  "siteSettings",
+  "aboutPage",
+  "joinPage",
+  "donatePage",
+  "contactPage",
+]);

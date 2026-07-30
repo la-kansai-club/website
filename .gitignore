@@ -16,6 +16,10 @@
 .DS_Store
 *.pem
 npm-debug.log*
+github-recovery-codes.txt
+
+# Claude Codeのローカル開発サーバー設定(プロジェクトのコードとは無関係)
+.claude/
 
 # typescript
 *.tsbuildinfo
