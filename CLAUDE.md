@@ -46,20 +46,70 @@ GalleryPreview / NewsPreviewはSanityから取得したデータを`content/home
 
 実際の写真素材はまだない。`PhotoFrame`コンポーネントが `src` 未指定時にプレースホルダー（山のモチーフ）を表示し、`src` を渡すだけで実際の写真に差し替えられる構造にしている。差し替えてもレイアウトが崩れないこと（アスペクト比を固定するため）。
 
-## デプロイ・確認URLの運用（2026-07-30確定）
+## ヘッダー・モバイルメニューのHover/Active仕様（2026-07-30確定）
+
+`components/Header.tsx`のナビゲーション（デスクトップ・モバイルメニュー共通）の状態別スタイル。
+
+- 通常時：現状維持（変更しない）
+- Hover：文字色をブランドグリーン（`text-green` = `#3BA564`）に変更。`transition-colors`で自然に変化させる
+- Active（現在表示中のページ）：文字色をブランドグリーンに変更し、通常より少しだけ強調する。下線・背景色などの装飾は付けない
+  - **注意**: nav全体がデフォルトで`font-semibold`のため、Activeを`font-semibold`にしても通常時と見た目が変わらない。強調を視覚的に成立させるため、コードでは`font-bold`を使用している（ユーザー指示の「font-medium、必要に応じてfont-semibold」からの意図的な逸脱。もし色のみで強調を表現したい場合はこの部分の見直しが必要）
+  - Active判定：完全一致に加え前方一致も含む（例: `/events/xxx`でも「Events」がActiveになる）。Homeの`/`のみ完全一致
+
+## デプロイ・確認・報告の運用（2026-07-30確定）
 
 このプロジェクトでは確認用URLを以下の2つに統一している。
 
 - **確認用（Preview / developブランチ）**: `https://website-git-develop-la-kansai-club.vercel.app`（developブランチの最新pushを常に指す固定エイリアス）
 - **本番（Production / mainブランチ）**: `https://website-gamma-nine-tyeg177uuh.vercel.app`（ログイン不要で公開）
 
-**重要な制約**: Preview URL（上記の固定エイリアスも、push毎に発行されるユニークな`website-<hash>-la-kansai-club.vercel.app`形式のURLも含む）はVercelのDeployment Protection（SSO）で保護されており、Vercelチームアカウントへのログインなしにはアクセスできない（アクセスすると`vercel.com/sso-api`へ302リダイレクトされる）。そのため、**Claude Code自身はPreview環境を目視確認できない**。ビルドの成否のみ、GitHub Deployments API（`/repos/la-kansai-club/website/deployments` → 該当deploymentの`/statuses` → `state`/`environment_url`）から確認可能。
+**重要な制約**:
+- Preview URL（上記の固定エイリアスも、push毎に発行されるユニークな`website-<hash>-la-kansai-club.vercel.app`形式のURLも含む）はVercelのDeployment Protection（SSO）で保護されており、Vercelチームアカウントへのログインなしにはアクセスできない（アクセスすると`vercel.com/sso-api`へ302リダイレクトされる）。そのため、**Claude Code自身はPreview環境を目視確認できない**
+- ローカルの`next dev`は、このPC固有のTLS証明書検証エラー（`UNABLE_TO_VERIFY_LEAF_SIGNATURE`）により、Sanityへの通信・Google Fonts取得など外部HTTPS通信を伴う処理が失敗することがある（ページ全体が500になる場合と、safeFetch経由でフォールバック表示になり正常表示される場合の両方があり得る。原因の切り分け方法は下記「目視確認できない場合の切り分け」を参照）
+
+**実装後に必ず行う確認**:
+1. `npx tsc --noEmit`（型チェック）
+2. `npm run build`（本番ビルド）
+   - 失敗した場合、エラーメッセージだけで終わらせず原因を確認する。「別セッションの開発サーバーが`.next`をロックしている」ことが原因と判断できる場合は、(1)該当の`next dev`/`npm run dev`プロセスを停止 → (2)`.next`フォルダを削除 → (3)`next build`を再実行、まで試す。それでも失敗する場合のみ「ビルド未確認」として報告する
+3. GitHubへのcommit・push
+4. Vercel Buildの成否（GitHub Deployments API: `/repos/la-kansai-club/website/deployments` → 該当deploymentの`/statuses` → `state`/`environment_url`）
+
+**目視確認できない場合の切り分け（推測で終わらせない）**:
+500エラーや画面が表示されない場合、「TLSが原因と思われる」等の推測だけで報告を終えない。可能な範囲で以下を確認する。
+- ブラウザコンソールのエラー
+- `next dev`のサーバーログ（`preview_logs`）
+- エラースタックトレース
+- 該当ルートで発生している例外の内容
+
+その上で、以下の3点を必ず切り分けて報告する。
+- ページ自体は表示できたか
+- Sanityデータ取得のみが失敗したのか（`safeFetch()`はSanity障害を捕捉してフォールバック表示する設計のため、本来Sanity障害だけならページ自体は正常に描画されるはず。ページごと落ちている場合は原因が別にある可能性が高い）
+- 今回変更した箇所（DOM・CSS）だけは確認できたか（スタイル変更等でページ全体が表示されている場合は、変更箇所だけでも個別に確認する）
+
+原因を特定できなかった場合は、「事実として確認できたこと」と「推測」を明確に分けて報告する。
 
 **developにpushした際の報告フォーマット（厳守）**:
-- 実装：完了
-- コミット：`<commit hash>`
-- GitHub push：完了
-- Vercel Build：成功／失敗（GitHub Deployments APIで確認できる範囲であることを明記）
-- 確認用URL：`https://website-git-develop-la-kansai-club.vercel.app`
 
-Preview画面の目視確認ができていない場合は「表示確認は未実施」と明記し、「確認済み」「反映されています」等の断定はしない。コミット・push・デプロイのいずれも行わずに「実装完了」と報告することは禁止（2026-07-30に、ローカル実装のみでpushせずに複数回「実装完了」と誤って報告した反省による）。mainへのマージ（本番反映）は、ユーザーがPreview環境で確認・承認した後にのみ行う。
+```
+実装：完了
+
+ローカル確認
+・ページ表示：
+・変更箇所：
+・TypeScript（tsc --noEmit）：
+・next build：
+
+GitHub
+・コミット：
+・GitHub push：
+
+Vercel
+・Build：成功／失敗
+・確認用URL：
+https://website-git-develop-la-kansai-club.vercel.app
+
+未確認事項：
+（あれば記載）
+```
+
+「実装：完了」と報告するのは、上記内容を確認した上で事実に基づいて報告できる場合のみ。不明な点・未確認事項はそのまま正直に記載し、「確認済み」「反映されています」等の断定はしない。コミット・push・デプロイのいずれも行わずに「実装完了」と報告することは禁止（2026-07-30に、ローカル実装のみでpushせずに複数回「実装完了」と誤って報告した反省による）。mainへのマージ（本番反映）は、ユーザーがPreview環境で確認・承認した後にのみ行う。
