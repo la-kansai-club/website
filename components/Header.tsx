@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Button from "./Button";
 
 // サイト共通のヘッダー。全ページで再利用する。
@@ -14,7 +15,14 @@ import Button from "./Button";
 //
 // ロゴ画像について:
 // - Sanityで未設定の場合は既定の public/images/logo.png を使う(呼び出し側でフォールバック済み)
-// - width/height は元画像の比率(約3:4)を保つための値。表示サイズはCSS(h-8 / md:h-10)側で制御している
+// - width/height は元画像の比率(約3:4)を保つための値。表示サイズはCSS(h-10 / sm:h-11 / md:h-12)側で制御している
+//
+// Hover/Active時の色分け(2026-07-30確定):
+// - 通常時は現状どおり(text-ink)。Hoverと現在ページ(Active)のみブランドグリーン(text-green)にする。
+// - ナビ全体がfont-semibold基調のため、Activeの「少しだけ強調」はfont-boldで表現している
+//   (font-semibold のままだと通常時と見た目が変わらないため)。下線・背景色などの装飾は付けない。
+// - Active判定は完全一致に加え、詳細ページ(例: /events/slug)でも該当セクションが
+//   ハイライトされるよう前方一致も含める(Homeの"/"のみ完全一致)。
 
 type NavItem = { label: string; href: string };
 
@@ -26,6 +34,10 @@ type HeaderProps = {
 
 export default function Header({ logoUrl, navItems, joinButtonLabel }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname === href || pathname?.startsWith(`${href}/`);
 
   return (
     <header className="border-b border-line bg-paper">
@@ -44,7 +56,13 @@ export default function Header({ logoUrl, navItems, joinButtonLabel }: HeaderPro
 
         <nav className="hidden items-center gap-7 text-body font-semibold text-ink md:flex">
           {navItems.map((link) => (
-            <Link key={link.href} href={link.href}>
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`transition-colors duration-200 hover:text-green ${
+                isActive(link.href) ? "font-bold text-green" : ""
+              }`}
+            >
               {link.label}
             </Link>
           ))}
@@ -72,7 +90,14 @@ export default function Header({ logoUrl, navItems, joinButtonLabel }: HeaderPro
       {open && (
         <nav className="flex flex-col gap-1 border-t border-line px-6 py-4 text-body font-semibold text-ink md:hidden">
           {navItems.map((link) => (
-            <Link key={link.href} href={link.href} className="py-2" onClick={() => setOpen(false)}>
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`py-2 transition-colors duration-200 hover:text-green ${
+                isActive(link.href) ? "font-bold text-green" : ""
+              }`}
+              onClick={() => setOpen(false)}
+            >
               {link.label}
             </Link>
           ))}
