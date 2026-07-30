@@ -49,7 +49,7 @@ export default async function DonatePage() {
                 </div>
               )}
               {donatePage?.zelleDescription && (
-                <p className="mt-4 text-body text-ink-soft">{donatePage.zelleDescription}</p>
+                <p className="mt-4 whitespace-pre-line text-body text-ink-soft">{donatePage.zelleDescription}</p>
               )}
             </div>
           )}
@@ -59,7 +59,7 @@ export default async function DonatePage() {
               <h2 className="text-h3 text-navy-deep md:text-h3-desktop">
                 {donatePage?.checkTitle || FALLBACK_CHECK_TITLE}
               </h2>
-              <p className="mt-4 text-body text-ink-soft">{donatePage?.checkDescription}</p>
+              <p className="mt-4 whitespace-pre-line text-body text-ink-soft">{donatePage?.checkDescription}</p>
             </div>
           )}
         </div>

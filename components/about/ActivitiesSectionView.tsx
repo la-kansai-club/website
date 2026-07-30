@@ -21,7 +21,7 @@ export default function ActivitiesSectionView({ section }: { section: Activities
             <div className="p-4">
               <h3 className="mb-1 text-h3 text-navy-deep md:text-h3-desktop">{activity.name}</h3>
               {activity.description && (
-                <p className="text-caption text-ink-soft">{activity.description}</p>
+                <p className="whitespace-pre-line text-caption text-ink-soft">{activity.description}</p>
               )}
             </div>
           </div>

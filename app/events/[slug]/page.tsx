@@ -48,7 +48,7 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
 
       {/* 説明ブロック */}
       {event.description && (
-        <p className="mt-8 max-w-[640px] text-body text-ink md:text-body-desktop">
+        <p className="mt-8 max-w-[640px] whitespace-pre-line text-body text-ink md:text-body-desktop">
           {event.description}
         </p>
       )}

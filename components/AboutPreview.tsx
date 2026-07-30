@@ -22,7 +22,7 @@ export default function AboutPreview({ title, text }: AboutPreviewProps) {
           Aboutで詳しく見る →
         </Link>
       </div>
-      <p className="mt-6 max-w-[640px] text-body text-ink md:text-body-desktop">{text}</p>
+      <p className="mt-6 max-w-[640px] whitespace-pre-line text-body text-ink md:text-body-desktop">{text}</p>
     </section>
   );
 }

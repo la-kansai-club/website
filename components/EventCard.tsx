@@ -38,7 +38,7 @@ export default function EventCard({
         <h3 className="mt-1 text-h3 text-navy-deep md:text-h3-desktop">{title}</h3>
         <p className="text-caption text-ink-soft">{meta}</p>
         {description && (
-          <p className="mt-1 max-w-[400px] text-body text-ink">{description}</p>
+          <p className="mt-1 max-w-[400px] whitespace-pre-line text-body text-ink">{description}</p>
         )}
         <Button href={ctaHref} variant="primary" className="mt-2">
           {ctaLabel}

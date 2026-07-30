@@ -25,7 +25,7 @@ export default async function ContactPage() {
         {contactPage?.pageTitle || FALLBACK_PAGE_TITLE}
       </h1>
 
-      <p className="mt-6 max-w-[560px] text-body text-ink">
+      <p className="mt-6 max-w-[560px] whitespace-pre-line text-body text-ink">
         {contactPage?.introText || FALLBACK_INTRO_TEXT}
       </p>
 

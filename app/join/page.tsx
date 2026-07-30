@@ -33,7 +33,7 @@ export default async function JoinPage() {
 
       {!hasContent && (
         <div className="mx-auto max-w-content px-6 pt-8 md:px-12">
-          <p className="max-w-[560px] text-body text-ink">{FALLBACK_INTRO_TEXT}</p>
+          <p className="max-w-[560px] whitespace-pre-line text-body text-ink">{FALLBACK_INTRO_TEXT}</p>
         </div>
       )}
 
@@ -78,7 +78,7 @@ export default async function JoinPage() {
                 <div>
                   <p className="text-h3 text-navy-deep md:text-h3-desktop">{step.title}</p>
                   {step.description && (
-                    <p className="mt-1 text-body text-ink-soft">{step.description}</p>
+                    <p className="mt-1 whitespace-pre-line text-body text-ink-soft">{step.description}</p>
                   )}
                 </div>
               </li>
