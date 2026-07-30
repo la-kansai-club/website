@@ -86,7 +86,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           address={settings?.address || fallbackFooter.address}
           email={settings?.email || fallbackFooter.email}
           instagramUrl={settings?.instagramUrl}
-          facebookUrl={settings?.facebookUrl}
+          facebookUrl={settings?.facebookUrl || fallbackFooter.facebookUrl}
           navItems={navItems}
           organizationName={settings?.organizationName || FALLBACK_ORGANIZATION_NAME}
         />

@@ -42,5 +42,6 @@ export const joinCta = {
 export const footer = {
   address: "Los Angeles, CA",
   email: "info@kansaiclub.org",
+  facebookUrl: "https://www.facebook.com/KansaiC",
   copyright: "© 2026 LA Kansai Club",
 };

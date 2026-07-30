@@ -9,6 +9,8 @@ import type { SanityJoinPage } from "@/sanity/lib/types";
 
 const FALLBACK_PAGE_TITLE = "Join";
 const FALLBACK_APPLY_BUTTON_LABEL = "入会申し込む";
+const FALLBACK_APPLY_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSfTqHwpgY9m79WMjUuGdivNzh0m1E4ZLBw1cFsc32_gBrRnYQ/viewform";
 
 export default async function JoinPage() {
   const joinPage = await safeFetch<SanityJoinPage | null>(joinPageQuery, null);
@@ -83,13 +85,11 @@ export default async function JoinPage() {
         </section>
       )}
 
-      {joinPage?.applyUrl && (
-        <div className="mx-auto max-w-content px-6 pt-16 text-center md:px-12 md:pt-24">
-          <Button href={joinPage.applyUrl} variant="primary">
-            {joinPage.applyButtonLabel || FALLBACK_APPLY_BUTTON_LABEL}
-          </Button>
-        </div>
-      )}
+      <div className="mx-auto max-w-content px-6 pt-16 text-center md:px-12 md:pt-24">
+        <Button href={joinPage?.applyUrl || FALLBACK_APPLY_URL} variant="primary">
+          {joinPage?.applyButtonLabel || FALLBACK_APPLY_BUTTON_LABEL}
+        </Button>
+      </div>
     </div>
   );
 }

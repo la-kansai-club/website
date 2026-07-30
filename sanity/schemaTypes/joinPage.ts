@@ -6,7 +6,7 @@
 //   Joinはページ構成自体を変える運用ニーズが低いため、
 //   理事の入力項目をシンプルにすることを優先した。
 // - 申込ボタンのリンク先(applyUrl)は外部の申込フォームを想定した任意URL。
-//   空欄の場合はボタン自体を表示しない(event.applyUrlと同じ設計)。
+//   空欄の場合はコード側のフォールバック(入会用Googleフォーム、app/join/page.tsx参照)を使う。
 
 import { defineField, defineType } from "sanity";
 
@@ -89,7 +89,7 @@ export const joinPageType = defineType({
       name: "applyUrl",
       title: "申込みURL",
       type: "url",
-      description: "例: 入会申込フォームのリンク。空欄の場合ボタン自体が表示されません。",
+      description: "例: 入会申込フォームのリンク。空欄の場合は既定の入会用Googleフォームが使われます。",
       validation: (Rule) => Rule.uri({ scheme: ["http", "https"] }),
       group: "apply",
     }),
