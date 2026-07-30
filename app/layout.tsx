@@ -26,7 +26,7 @@ const FALLBACK_TITLE = "LA Kansai Club";
 const FALLBACK_DESCRIPTION =
   "関西にゆかりのある方も、関西文化が好きな方も。世代や地域を越えて交流を楽しめる、LA Kansai Clubのコミュニティです。";
 const FALLBACK_ORGANIZATION_NAME = "LA Kansai Club";
-const FALLBACK_JOIN_BUTTON_LABEL = "入会する";
+const FALLBACK_JOIN_BUTTON_LABEL = "Join";
 
 // ナビゲーションのhref(リンク先)ごとに、対応するsiteSettingsのフィールド名を固定でひもづける。
 // hrefはコード側の一覧(content/home.tsのnavLinks)が正であり、Sanity側からは表示名しか上書きできない。

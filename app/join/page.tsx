@@ -8,7 +8,9 @@ import type { SanityJoinPage } from "@/sanity/lib/types";
 // (Home/Aboutと同じ「データが無ければ自然に消える」設計)。
 
 const FALLBACK_PAGE_TITLE = "Join";
-const FALLBACK_APPLY_BUTTON_LABEL = "入会申し込む";
+const FALLBACK_INTRO_TEXT =
+  "LA Kansai Clubへのご入会を歓迎します。下記のフォームからお申し込みください。";
+const FALLBACK_APPLY_BUTTON_LABEL = "入会申し込み";
 const FALLBACK_APPLY_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfTqHwpgY9m79WMjUuGdivNzh0m1E4ZLBw1cFsc32_gBrRnYQ/viewform";
 
@@ -31,7 +33,7 @@ export default async function JoinPage() {
 
       {!hasContent && (
         <div className="mx-auto max-w-content px-6 pt-8 md:px-12">
-          <p className="text-body text-ink-soft">このページは準備中です。</p>
+          <p className="max-w-[560px] text-body text-ink">{FALLBACK_INTRO_TEXT}</p>
         </div>
       )}
 

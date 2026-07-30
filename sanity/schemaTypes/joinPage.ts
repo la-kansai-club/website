@@ -82,7 +82,7 @@ export const joinPageType = defineType({
       name: "applyButtonLabel",
       title: "申込ボタンの文言",
       type: "string",
-      description: "空欄の場合は「入会申し込む」と表示されます。",
+      description: "空欄の場合は「入会申し込み」と表示されます。",
       group: "apply",
     }),
     defineField({
