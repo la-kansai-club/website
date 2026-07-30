@@ -45,3 +45,21 @@ GalleryPreview / NewsPreviewはSanityから取得したデータを`content/home
 ## 写真の扱い
 
 実際の写真素材はまだない。`PhotoFrame`コンポーネントが `src` 未指定時にプレースホルダー（山のモチーフ）を表示し、`src` を渡すだけで実際の写真に差し替えられる構造にしている。差し替えてもレイアウトが崩れないこと（アスペクト比を固定するため）。
+
+## デプロイ・確認URLの運用（2026-07-30確定）
+
+このプロジェクトでは確認用URLを以下の2つに統一している。
+
+- **確認用（Preview / developブランチ）**: `https://website-git-develop-la-kansai-club.vercel.app`（developブランチの最新pushを常に指す固定エイリアス）
+- **本番（Production / mainブランチ）**: `https://website-gamma-nine-tyeg177uuh.vercel.app`（ログイン不要で公開）
+
+**重要な制約**: Preview URL（上記の固定エイリアスも、push毎に発行されるユニークな`website-<hash>-la-kansai-club.vercel.app`形式のURLも含む）はVercelのDeployment Protection（SSO）で保護されており、Vercelチームアカウントへのログインなしにはアクセスできない（アクセスすると`vercel.com/sso-api`へ302リダイレクトされる）。そのため、**Claude Code自身はPreview環境を目視確認できない**。ビルドの成否のみ、GitHub Deployments API（`/repos/la-kansai-club/website/deployments` → 該当deploymentの`/statuses` → `state`/`environment_url`）から確認可能。
+
+**developにpushした際の報告フォーマット（厳守）**:
+- 実装：完了
+- コミット：`<commit hash>`
+- GitHub push：完了
+- Vercel Build：成功／失敗（GitHub Deployments APIで確認できる範囲であることを明記）
+- 確認用URL：`https://website-git-develop-la-kansai-club.vercel.app`
+
+Preview画面の目視確認ができていない場合は「表示確認は未実施」と明記し、「確認済み」「反映されています」等の断定はしない。コミット・push・デプロイのいずれも行わずに「実装完了」と報告することは禁止（2026-07-30に、ローカル実装のみでpushせずに複数回「実装完了」と誤って報告した反省による）。mainへのマージ（本番反映）は、ユーザーがPreview環境で確認・承認した後にのみ行う。
