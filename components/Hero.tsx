@@ -45,7 +45,7 @@ export default function Hero({
       <div className="absolute inset-0 bg-navy-deep/80" />
       <div className="absolute inset-0 flex flex-col justify-center px-6 md:max-w-[620px] md:px-16">
         <p className="mb-3 text-eyebrow font-bold uppercase text-white/95 md:mb-4">{eyebrow}</p>
-        <h1 className="mb-3 text-h1 text-white md:text-h1-desktop">{title}</h1>
+        <h1 className="mb-3 whitespace-pre-line text-h1 text-white md:text-h1-desktop">{title}</h1>
         <p className="mb-6 whitespace-pre-line text-body text-white/90 md:mb-8 md:text-body-desktop">{subtitle}</p>
         <div className="flex flex-col gap-3 md:flex-row md:gap-4">
           <Button href={primaryCtaHref} variant="primary" className="justify-center">

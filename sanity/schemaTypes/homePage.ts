@@ -21,7 +21,14 @@ export const homePageType = defineType({
     { name: "join", title: "Join" },
   ],
   fields: [
-    defineField({ name: "heroTitle", title: "Heroタイトル", type: "string", group: "hero" }),
+    defineField({
+      name: "heroTitle",
+      title: "Heroタイトル",
+      type: "text",
+      rows: 2,
+      description: "改行して複数行にできます。",
+      group: "hero",
+    }),
     defineField({
       name: "heroSubtitle",
       title: "Heroサブタイトル",
