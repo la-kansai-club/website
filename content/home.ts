@@ -36,7 +36,7 @@ export const aboutPreview = {
 
 export const joinCta = {
   title: "一緒に関西を楽しみませんか？",
-  cta: { label: "入会について見る", href: "/join" },
+  cta: { label: "入会する", href: "/join" },
 };
 
 export const footer = {

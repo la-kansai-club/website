@@ -4,7 +4,6 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Button from "./Button";
 
 // サイト共通のヘッダー。全ページで再利用する。
 // 背景は白(bg-paper)。
@@ -23,6 +22,8 @@ import Button from "./Button";
 //   (font-semibold のままだと通常時と見た目が変わらないため)。下線・背景色などの装飾は付けない。
 // - Active判定は完全一致に加え、詳細ページ(例: /events/slug)でも該当セクションが
 //   ハイライトされるよう前方一致も含める(Homeの"/"のみ完全一致)。
+// - Joinへのリンクは特別なCTAボタンとして扱わず、他のナビ項目と全く同じスタイル
+//   (色・Hover・Active)のテキストリンクとして表示する(2026-07-30変更)。
 
 type NavItem = { label: string; href: string };
 
@@ -66,9 +67,14 @@ export default function Header({ logoUrl, navItems, joinButtonLabel }: HeaderPro
               {link.label}
             </Link>
           ))}
-          <Button href="/join" className="min-h-0 px-5 py-2 text-caption">
+          <Link
+            href="/join"
+            className={`transition-colors duration-200 hover:text-green ${
+              isActive("/join") ? "font-bold text-green" : ""
+            }`}
+          >
             {joinButtonLabel}
-          </Button>
+          </Link>
         </nav>
 
         <button
@@ -101,9 +107,15 @@ export default function Header({ logoUrl, navItems, joinButtonLabel }: HeaderPro
               {link.label}
             </Link>
           ))}
-          <Button href="/join" className="mt-2 w-full">
+          <Link
+            href="/join"
+            className={`py-2 transition-colors duration-200 hover:text-green ${
+              isActive("/join") ? "font-bold text-green" : ""
+            }`}
+            onClick={() => setOpen(false)}
+          >
             {joinButtonLabel}
-          </Button>
+          </Link>
         </nav>
       )}
     </header>

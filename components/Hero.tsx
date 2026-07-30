@@ -1,8 +1,10 @@
 import PhotoFrame from "./PhotoFrame";
 import Button from "./Button";
 
-// トップページ最上部のヒーロー。写真を主役にし、CTAを2つ配置する
-// (デザインモック通り: Primary「イベントを見る」/ Secondary「入会する」)。
+// トップページ最上部のヒーロー。写真を主役にし、CTAを2つ配置する。
+// 「イベントを見る」「入会する」はどちらも同格のCTAとして扱い、
+// 両方ともマゼンタのPrimaryスタイルで表示する(2026-07-30変更。
+// 以前はSecondary=白アウトラインだったが、Joinも同じくらい目立たせたいという方針に変更)。
 //
 // 文言・画像はSanity(homePage)から編集できる。リンク先(href)は事故防止のため
 // 呼び出し側(app/page.tsx)で固定値を渡す構成にしており、Sanityからは変更できない。
@@ -49,7 +51,7 @@ export default function Hero({
           <Button href={primaryCtaHref} variant="primary" className="justify-center">
             {primaryCtaLabel}
           </Button>
-          <Button href={secondaryCtaHref} variant="onPhoto" className="justify-center">
+          <Button href={secondaryCtaHref} variant="primary" className="justify-center">
             {secondaryCtaLabel}
           </Button>
         </div>
