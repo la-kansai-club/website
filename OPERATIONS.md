@@ -122,7 +122,7 @@ Webサイト管理専用のGoogleアカウントを1つ新規作成し、この�
 - `NEXT_PUBLIC_SANITY_PROJECT_ID` — SanityプロジェクトID
 - `NEXT_PUBLIC_SANITY_DATASET` — 使用するデータセット名（例：production）
 - `NEXT_PUBLIC_SANITY_API_VERSION` — APIバージョン(日付形式。通常は変更不要)
-- `SANITY_API_TOKEN` — 下書きプレビューなどが必要な場合のみ使用(現時点では未使用)
+- `SANITY_API_TOKEN` — 初期データ投入(`npm run seed`。10.5参照)など書き込みが必要な場合のみ設定する。普段は未設定のままでよい
 - 本番環境ではVercelのプロジェクト設定画面（ブラウザ）で設定し、コードやGitHubには直接書き込まない。ローカル開発では`website/.env.local`（Gitには含まれない）に設定する。値の取得方法は`SANITY_SETUP_GUIDE.md`参照
 - 万一これらの値が未設定でも、公開サイト側（Homeページ等）は自然なメッセージを表示するだけでエラー画面にはならない設計になっている（影響を受けるのは`/studio`のみ）
 
@@ -139,6 +139,8 @@ website/
 │   ├── lib/               クライアント・画像URL生成・GROQクエリ・日付/タグ変換
 │   └── env.ts             環境変数の読み込み(1箇所に集約)
 ├── sanity.config.ts       Sanity Studioの設定
+├── scripts/
+│   └── seed.mjs           初期データ(Seed)投入スクリプト(10.5参照)
 ├── public/                静的ファイル
 ├── tailwind.config.ts     デザイントークン定義
 ├── CLAUDE.md              AIエージェント向けのプロジェクト指示書
@@ -180,6 +182,96 @@ website/
 - 年1回のアクセス点検（2.参照）のタイミングで、GitHub Organizationのメンバーと権限も一緒に確認する
 - Organizationの設定で「メンバー全員に2段階認証を必須にする」をオンにする
 - 常時Write権限を持つのは1〜2名程度を目安にし、それ以上に増やさない
+
+---
+
+# 10. Sanity Studio運用ガイド
+
+## 10.1 StudioのURL
+
+| 環境 | URL | 用途 |
+|---|---|---|
+| 確認用(Preview) | `https://website-git-develop-la-kansai-club.vercel.app/studio` | 公開前の下書き確認・テスト用 |
+| 本番(Production) | `https://website-gamma-nine-tyeg177uuh.vercel.app/studio` | 実際の会員・訪問者が見るサイトの内容を編集 |
+
+日常の更新作業は**本番URL**で行います。確認用URLは、開発者が変更を加えた際の事前確認にのみ使用します。
+
+## 10.2 ログイン方法
+
+1. 上記いずれかのURLを開く
+2. 「Continue with Google」を選ぶ
+3. **理事本人の個人Googleアカウント**でログインする(事前にSanityのメンバーとして招待されている必要があります。招待されていない場合は10.4を参照)
+
+## 10.3 理事の権限(2段階)
+
+- **Administrator**：メンバーの追加・削除ができる。会長・副会長など1〜2名のみに限定
+- **Editor**：記事・ページの作成・編集・公開ができるが、メンバー管理はできない。実際に更新作業をする理事に付与
+- 権限の考え方の詳細は「4. 編集者の追加・削除方法」を参照
+
+## 10.4 新しい理事を招待する手順
+
+1. Administrator権限を持つ理事が[sanity.io/manage](https://www.sanity.io/manage)にログインする
+2. プロジェクト(`gpi6bjc8`)を開き、「Members」タブを開く
+3. 「Invite members」から、招待したい理事のメールアドレスを入力する
+4. 権限(Administrator/Editor)を選んで送信する
+5. 招待された理事は、届いたメールのリンクから参加を承認し、自分のGoogleアカウントでログインする
+6. 招待した側は、実際にログインでき、試しに1件編集・公開できることを確認する
+
+## 10.5 初期データ(Seed)の再実行方法
+
+CMSをリセットした場合や新しい環境を作った場合に、サイトに表示されている基本内容(Home/About/Join/Donate/Contact/サイト設定)を初期データとして投入できます。`website/scripts/seed.mjs`で実装済みです。
+
+1. Editor権限以上のAPIトークンを発行する(10.6参照)
+2. `website/.env.local`に`SANITY_API_TOKEN=`を設定する
+3. `website`フォルダで`npm run seed`を実行する
+4. 各ドキュメントについて「作成しました」または「既に存在するためスキップしました」とログが表示される
+5. **既存データがある項目は上書きされない設計**のため、何度でも安全に再実行できる
+6. 実行後は10.6の手順でトークンを削除する
+
+## 10.6 APIトークンの発行・削除方法
+
+**発行**
+1. [sanity.io/manage](https://www.sanity.io/manage) → プロジェクト(`gpi6bjc8`) → 「API」タブ → 「Tokens」→「Add API token」
+2. 名前は任意。権限は用途に応じて選ぶ(Seed実行など書き込みが必要な場合は「Editor」、閲覧のみなら「Viewer」)
+3. 表示されたトークンをコピーする(**この画面を閉じると二度と表示されません**)
+
+**削除**
+1. 同じ「Tokens」画面で、該当トークンの右側の削除ボタンをクリックする
+2. 併せて`.env.local`から該当行を削除する
+
+APIトークンは強い権限を持つため、使い終わったら都度削除することを推奨します。
+
+## 10.7 develop → main → Production への公開手順
+
+1. 開発者が`develop`ブランチに変更をpushすると、確認用URL(Preview)に自動反映される
+2. 確認用URLで表示・動作を確認する
+3. 問題がなければ、開発者が`develop`の内容を`main`にマージする
+4. `main`への反映と同時に、Vercelが自動的に本番(Production)へデプロイする
+5. 本番URLで最終確認する
+
+技術的な詳細は`DEPLOYMENT_GUIDE.md`を参照。
+
+## 10.8 CORS Originの追加方法
+
+新しいドメイン(本番URLや今後の独自ドメインなど)からSanityへアクセスできるようにするには、CORS設定への追加が必要です。
+
+1. [sanity.io/manage](https://www.sanity.io/manage) → プロジェクト(`gpi6bjc8`) → 「API」タブ → 「CORS Origins」
+2. 「Add CORS origin」をクリック
+3. 追加したいURL(例: `https://website-gamma-nine-tyeg177uuh.vercel.app`)を入力する
+4. 「Allow credentials」に**チェックを入れて**保存する
+
+これを忘れると、該当URLの`/studio`にアクセスはできても保存(Publish)ができない、といった不具合が起きます。
+
+## 10.9 トラブルシューティング
+
+| 症状 | 原因の可能性 | 対応 |
+|---|---|---|
+| ログイン画面から進まない | Sanityのメンバーとして招待されていない、または個人アカウント以外でログインしようとしている | 10.4を参照して招待状況を確認する |
+| Studioを開くと`'id' is required for lists`というエラーが出る | Structure Builder(`sanity.config.ts`)のリスト定義がタイトル(日本語)からidを自動生成できていない(2026-07-30に実際に発生し、`.id()`を明示する形で修正済みの事例) | 開発者に連絡する。`sanity.config.ts`内のすべての`S.list()`/`S.listItem()`に英数字の`.id()`が設定されているか確認してもらう |
+| 保存(Publish)できない | 現在アクセスしているURLがCORS Originsに登録されていない | 10.8の手順で追加する |
+| 特定のページだけ「準備中です」と表示される | そのページのSanityドキュメントにまだ内容が入力されていない(異常ではない) | Studioで該当ページを開き、内容を入力してPublishする |
+
+上記で解決しない場合は、開発者にこのドキュメントの該当項目番号と、実際に表示されたエラー内容を伝えてください。
 
 ---
 
