@@ -5,6 +5,11 @@ import Link from "next/link";
 // 住所・メール・SNS・ナビゲーションの表示名・団体名はSanity(siteSettings)から編集できる。
 // ナビゲーションのリンク先(href)はコード側で固定(親のapp/layout.tsxから渡される)。
 // Copyrightの年は自動計算し、専用フィールドは持たない。
+//
+// フッターのメニューはヘッダーと同じ並び順のうち、Home/Donate/Contactを除いた
+// About/Events/News/Galleryのみを表示する(2026-07-30確定)。
+
+const FOOTER_NAV_HREFS = ["/about", "/events", "/news", "/gallery"];
 
 type NavItem = { label: string; href: string };
 
@@ -40,7 +45,7 @@ export default function Footer({
           <p className="mb-3 text-[12px] font-bold text-footer-text-muted">Menu</p>
           <div className="flex flex-col gap-2 text-body text-footer-text">
             {navItems
-              .filter((link) => link.href !== "/")
+              .filter((link) => FOOTER_NAV_HREFS.includes(link.href))
               .map((link) => (
                 <Link key={link.href} href={link.href}>
                   {link.label}
